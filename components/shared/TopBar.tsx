@@ -1,4 +1,4 @@
-import { SignOutButton, SignedIn } from '@clerk/nextjs'
+import { OrganizationSwitcher, SignOutButton, SignedIn } from '@clerk/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -21,6 +21,16 @@ export const TopBar = () => {
               </SignOutButton>
             </SignedIn>
           </div>
+          <OrganizationSwitcher appearance={{
+            elements: {
+              organizationSwitcherTrigger: 
+              "py-2 px-4"
+            }
+          }}>
+            <div className='flex cursor-pointer'>
+              <Image src='/assets/organization.svg' alt='organization' width={24} height={24}/>
+            </div>
+          </OrganizationSwitcher>
         </div>
       </nav>
     </>
