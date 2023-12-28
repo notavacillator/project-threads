@@ -66,6 +66,7 @@ const AccountProfile = ({ user, btnTitle} : Props) => {
     }
     
     const onSubmit = (values : z.infer<typeof userValidation>) => {
+      const blob = values.profile_photo
         console.log(values)
     }
     
