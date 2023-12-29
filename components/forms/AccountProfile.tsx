@@ -19,6 +19,9 @@ import { z } from 'zod';
 import Image from 'next/image';
 import { Textarea } from '../ui/textarea';
 import { usePathname, useRouter } from 'next/navigation';
+import { isBase64Image } from '@/lib/utils';
+import { useUploadThing } from '@/lib/uploadthing'; 
+
 
 interface Props {
     user : {
@@ -39,6 +42,7 @@ const AccountProfile = ({ user, btnTitle} : Props) => {
   // const { startUpload } = useUploadThing("media");
 
   const [files, setFiles] = useState<File[]>([]);
+  const { startUpload } = useUploadThing("media");
   
     const form = useForm({
         resolver: zodResolver(userValidation),
@@ -65,9 +69,19 @@ const AccountProfile = ({ user, btnTitle} : Props) => {
         }
     }
     
-    const onSubmit = (values : z.infer<typeof userValidation>) => {
-      const blob = values.profile_photo
+    const onSubmit = async (values : z.infer<typeof userValidation>) => {
+      const blob = values.profile_photo;
+      const hasImageChanged = isBase64Image(blob);
         console.log(values)
+        if (hasImageChanged ){
+          const imgRes = await startUpload(files);
+
+          if(imgRes && imgRes[0].url){
+            values.profile_photo = imgRes[0].url;
+          }
+        }
+
+        //  Update user profile
     }
     
   return (
